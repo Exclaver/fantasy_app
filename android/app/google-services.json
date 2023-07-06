@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "877010609566",
+    "project_id": "influencer-fantasy",
+    "storage_bucket": "influencer-fantasy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:877010609566:android:680b39f08bee81a92aa28f",
+        "android_client_info": {
+          "package_name": "com.example.fantasyapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "877010609566-2ss3jd7j92k1sdbv7kp52g8rl6hm4djk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHUF8d8-K7J2HgDFK5nBWfq7B0lpM4rfA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "877010609566-2ss3jd7j92k1sdbv7kp52g8rl6hm4djk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "877010609566-1nfc3m3u5nnjcd5nhdfrufut5c3vks76.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.fantasyApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
