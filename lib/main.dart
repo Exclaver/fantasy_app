@@ -1,4 +1,4 @@
-import 'package:fantasyapp/screens/welcome_screen.dart';
+import 'package:fantasyapp/auth/welcome_screen.dart';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -30,3 +30,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
