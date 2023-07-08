@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fantasyapp/screens/sign_in.dart';
 import 'package:fantasyapp/widgets/app_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -17,8 +19,11 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController _name = TextEditingController();
   final TextEditingController _email = TextEditingController();
   final TextEditingController _password = TextEditingController();
+  final TextEditingController _phoneNo = TextEditingController();
 
   bool passwordVisible = false;
+
+  String selectedGender = '';
 
   Future signUp() async {
     try {
@@ -34,6 +39,19 @@ class _SignUpState extends State<SignUp> {
         ),
       );
     }
+    createUserProfile(
+      _name.text.trim(),
+      _email.text.trim(),
+      _phoneNo.text.trim(),
+    );
+  }
+
+  Future createUserProfile(String name, String email, String phoneNo) async {
+    await FirebaseFirestore.instance.collection('users').add({
+      'name': name,
+      'phone_no': phoneNo,
+      'email': email,
+    });
   }
 
   @override
@@ -44,23 +62,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      floatingActionButton: Padding(
-        padding: EdgeInsets.fromLTRB(width * 0.04, height * 0.08, 0, 0),
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: FloatingActionButton(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Icon(Icons.arrow_back_sharp),
-          ),
-        ),
-      ),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -83,7 +85,14 @@ class _SignUpState extends State<SignUp> {
                         size: 15,
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const SignIn(),
+                            ),
+                          );
+                        },
                         child: const AppText(text: 'Sign In'),
                       )
                     ],
@@ -98,7 +107,45 @@ class _SignUpState extends State<SignUp> {
                     label: 'Name',
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 25,
+                  ),
+                  // Row(
+                  //   children: [
+                  //     Radio<String>(
+                  //       value: 'Male',
+                  //       groupValue: selectedGender,
+                  //       onChanged: (value) {
+                  //         setState(() {
+                  //           selectedGender = value!;
+                  //         });
+                  //       },
+                  //     ),
+                  //     const AppText(text: 'Male', size: 17),
+                  //     const SizedBox(width: 30),
+                  //     Radio<String>(
+                  //       value: 'Female',
+                  //       groupValue: selectedGender,
+                  //       onChanged: (value) {
+                  //         setState(() {
+                  //           selectedGender = value!;
+                  //         });
+                  //       },
+                  //     ),
+                  //     const AppText(text: 'Female', size: 17),
+                  //   ],
+                  // ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  AppTextField(
+                    controller: _phoneNo,
+                    keyboardType: TextInputType.phone,
+                    validator: phoneNumberValidator,
+                    obscureText: false,
+                    label: 'Phone Number',
+                  ),
+                  const SizedBox(
+                    height: 25,
                   ),
                   AppTextField(
                     controller: _email,
@@ -106,7 +153,7 @@ class _SignUpState extends State<SignUp> {
                     label: 'Email',
                   ),
                   const SizedBox(
-                    height: 15,
+                    height: 25,
                   ),
                   AppTextField(
                     controller: _password,
@@ -155,6 +202,16 @@ class _SignUpState extends State<SignUp> {
 String? nameValidator(String? val) {
   if (val!.isEmpty || !RegExp(r'^[a-z A-Z]+$').hasMatch(val)) {
     return 'Required';
+  } else {
+    return null;
+  }
+}
+
+String? phoneNumberValidator(String? value) {
+  if (value!.isEmpty) {
+    return 'Phone number is required';
+  } else if (!RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+    return 'Invalid phone number';
   } else {
     return null;
   }

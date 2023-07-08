@@ -1,5 +1,6 @@
-import 'package:fantasyapp/screens/home.dart';
-import 'package:fantasyapp/services/google_auth_service.dart';
+import 'package:fantasyapp/screens/home_screen.dart';
+import 'package:fantasyapp/screens/sign_up.dart';
+import 'package:fantasyapp/auth/services/google_auth_service.dart';
 import 'package:fantasyapp/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -32,7 +33,9 @@ class _SignInState extends State<SignIn> {
       // ignore: use_build_context_synchronously
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
+        MaterialPageRoute(
+          builder: (context) => const HomeScreen(),
+        ),
       );
       print('Sign-in successful');
       print('User ID: ${userCredential.user?.uid}');
@@ -63,25 +66,11 @@ class _SignInState extends State<SignIn> {
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
-    final width = MediaQuery.of(context).size.width;
+    // final width = MediaQuery.of(context).size.width;
     return Scaffold(
-      floatingActionButton: Padding(
-        padding: EdgeInsets.fromLTRB(width * 0.04, height * 0.08, 0, 0),
-        child: Align(
-          alignment: Alignment.topLeft,
-          child: FloatingActionButton(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            child: const Icon(Icons.arrow_back_sharp),
-          ),
-        ),
-      ),
       body: SingleChildScrollView(
         child: Padding(
-          padding: EdgeInsets.only(top: height * 0.29, left: 20, right: 20),
+          padding: EdgeInsets.only(top: height * 0.25, left: 20, right: 20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
@@ -141,6 +130,27 @@ class _SignInState extends State<SignIn> {
                     color: Colors.white,
                   ),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const AppText(
+                    text: "Don't have a account?",
+                    color: Colors.grey,
+                    size: 15,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SignUp(),
+                        ),
+                      );
+                    },
+                    child: const AppText(text: 'Sign Up'),
+                  )
+                ],
               ),
               const SizedBox(
                 height: 40,
