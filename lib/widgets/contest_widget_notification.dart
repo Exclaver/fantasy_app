@@ -4,13 +4,13 @@ import 'package:fantasyapp/widgets/app_text.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-class ConstestWidget extends StatefulWidget {
+class ContestWidgetNotif extends StatefulWidget {
   final String prizepool;
   final ImageProvider<Object> image;
   final String entryfees;
   final String category;
 
-  const ConstestWidget({
+  const ContestWidgetNotif({
     Key? key,
     required this.image,
     required this.prizepool,
@@ -19,14 +19,14 @@ class ConstestWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<ConstestWidget> createState() => _ConstestWidgetState();
+  State<ContestWidgetNotif> createState() => _ConstestWidgetState();
 }
 
-class _ConstestWidgetState extends State<ConstestWidget> {
+class _ConstestWidgetState extends State<ContestWidgetNotif> {
   bool _timerRunning = false;
-  late Timer _timer;
-  int _totalSeconds = 10; // Set timer 
+  int _totalSeconds = 60; // Set timer
 
+  Timer? _timer;
   SharedPreferences? _preferences;
   FlutterLocalNotificationsPlugin? _flutterLocalNotificationsPlugin;
 
@@ -40,7 +40,7 @@ class _ConstestWidgetState extends State<ConstestWidget> {
   void initializePreferences() async {
     _preferences = await SharedPreferences.getInstance();
     setState(() {
-      _totalSeconds = _preferences!.getInt('timerDuration') ?? _totalSeconds;
+      _totalSeconds = _preferences!.getInt('timerDuration') ?? 0;
     });
   }
 
@@ -50,12 +50,13 @@ class _ConstestWidgetState extends State<ConstestWidget> {
         AndroidInitializationSettings('app_icon');
     const InitializationSettings initializationSettings =
         InitializationSettings(android: initializationSettingsAndroid);
-    _flutterLocalNotificationsPlugin!.initialize(initializationSettings);
+    _flutterLocalNotificationsPlugin!.initialize(initializationSettings,
+        onDidReceiveNotificationResponse: null);
   }
 
   @override
   void dispose() {
-    _timer.cancel();
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -68,23 +69,22 @@ class _ConstestWidgetState extends State<ConstestWidget> {
         } else {
           _timerRunning = false;
           stopCountdownTimer();
-          showNotification();
         }
       });
     });
   }
 
   void stopCountdownTimer() {
-    _timer.cancel();
+    _timer?.cancel();
     _preferences!.remove('timerDuration');
+    _flutterLocalNotificationsPlugin!.cancel(0);
   }
 
-  Future<void> showNotification() async {
+  Future<void> scheduleNotification() async {
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
       'your_channel_id',
       'your_channel_name',
-      channelDescription: 'Your channel description',
       importance: Importance.high,
       priority: Priority.high,
     );
@@ -92,9 +92,10 @@ class _ConstestWidgetState extends State<ConstestWidget> {
         NotificationDetails(android: androidPlatformChannelSpecifics);
     await _flutterLocalNotificationsPlugin!.show(
       0,
-      'Timer Expired',
-      'The timer has finished',
+      'Countdown Timer',
+      'Timer has finished',
       platformChannelSpecifics,
+      payload: 'timer_complete',
     );
   }
 
@@ -134,6 +135,7 @@ class _ConstestWidgetState extends State<ConstestWidget> {
                         if (_timerRunning) {
                           if (_totalSeconds > 0) {
                             startCountdownTimer();
+                            scheduleNotification();
                           }
                         } else {
                           stopCountdownTimer();
@@ -172,14 +174,10 @@ class _ConstestWidgetState extends State<ConstestWidget> {
   }
 
   String formatDuration(int totalSeconds) {
-    if (totalSeconds > 0) {
-      int seconds = totalSeconds % 60;
-      int minutes = (totalSeconds ~/ 60) % 60;
-      int hours = (totalSeconds ~/ 3600) % 24;
+    int seconds = totalSeconds % 60;
+    int minutes = (totalSeconds ~/ 60) % 60;
+    int hours = (totalSeconds ~/ 3600) % 24;
 
-      return '$hours hr $minutes min $seconds sec';
-    } else {
-      return 'Timer Ended';
-    }
+    return '$hours hr $minutes min $seconds sec';
   }
 }
