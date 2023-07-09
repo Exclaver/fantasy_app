@@ -1,8 +1,9 @@
-import 'package:fantasyapp/screens/welcome_screen.dart';
 import 'package:fantasyapp/screens/home_screen.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../screens/sign_in.dart';
 
 class CheckForSignIn extends StatelessWidget {
   const CheckForSignIn({super.key});
@@ -15,7 +16,7 @@ class CheckForSignIn extends StatelessWidget {
           if (snapshot.hasData) {
             return  HomeScreen();
           } else {
-            return const WelcomeScreen();
+            return const SignIn();
           }
         });
   }

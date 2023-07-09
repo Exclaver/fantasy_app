@@ -12,6 +12,7 @@ class _UserInfoState extends State<UserInfo> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(children: []),
+      
     );
   }
 }

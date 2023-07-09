@@ -9,7 +9,7 @@ import '../widgets/text_field.dart';
 import '../widgets/welcome_buttons.dart';
 
 class SignIn extends StatefulWidget {
-  const SignIn({super.key});
+  const SignIn({Key? key}) : super(key: key);
 
   @override
   State<SignIn> createState() => _SignInState();
@@ -34,7 +34,7 @@ class _SignInState extends State<SignIn> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => const HomeScreen(),
+          builder: (context) => HomeScreen(),
         ),
       );
       print('Sign-in successful');
@@ -176,7 +176,9 @@ class _SignInState extends State<SignIn> {
                 height: 40,
               ),
               WelcomeButton(
-                onTap: () => AuthService().signInWithGoogle(),
+                onTap: () {
+                  AuthService().signInWithGoogle();
+                },
                 logo: true,
                 text: 'Sign In with Google',
               ),

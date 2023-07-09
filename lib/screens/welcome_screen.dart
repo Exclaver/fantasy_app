@@ -4,6 +4,8 @@ import 'package:fantasyapp/screens/sign_up.dart';
 import 'package:fantasyapp/widgets/welcome_buttons.dart';
 import 'package:flutter/material.dart';
 
+import '../auth/services/google_auth_service.dart';
+
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
 
@@ -31,7 +33,7 @@ class WelcomeScreen extends StatelessWidget {
                 height: height * 0.2,
               ),
               WelcomeButton(
-                onTap: () {},
+                onTap: () => AuthService().signInWithGoogle(),
                 logo: true,
                 text: 'Sign up with Google',
               ),

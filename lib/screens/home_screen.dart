@@ -1,3 +1,8 @@
+import '../widgets/bottom_nav_bar.dart';
+import 'my_matches.dart';
+import 'profile_page.dart';
+import 'package:fantasyapp/screens/something.dart';
+
 import 'package:fantasyapp/widgets/category_container.dart';
 import 'package:fantasyapp/widgets/contest_widget.dart';
 import 'package:fantasyapp/widgets/wallet_container.dart';
@@ -7,13 +12,41 @@ import 'package:flutter/material.dart';
 import '../widgets/app_text.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int currentScreen = 0;
+  final List<Widget> screens = const [
+    HomeScreen(),
+    MyMatches(),
+    Something(),
+    ProfilePage(),
+  ];
+
+  List<IconData> icons = [
+    Icons.home,
+    Icons.my_library_add,
+    Icons.chat,
+    Icons.person,
+  ];
+
+  List<String> labels = [
+    'Home',
+    'My Matches',
+    'Chat',
+    'Account',
+  ];
+
+  void onTabTapped(int index) {
+    setState(() {
+      currentScreen = index;
+    });
+  }
+
   List<String> categories = [
     'All',
     'Finance',
@@ -59,7 +92,6 @@ class _HomeScreenState extends State<HomeScreen> {
       child: DefaultTabController(
         length: 3,
         child: Scaffold(
-          drawer: const Drawer(),
           appBar: AppBar(
             backgroundColor: const Color.fromARGB(255, 176, 144, 229),
             title: const AppText(
@@ -81,18 +113,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ],
-            bottom:  const TabBar(tabs: [
-              Tab(icon: Icon(Icons.live_tv_rounded), text: 'Live',),
-              Tab(icon: Icon(Icons.calendar_month_outlined), text: 'Upcoming',),
-              Tab(icon: Icon(Icons.emoji_events_outlined), text: 'Results',),
-             
+            bottom: const TabBar(tabs: [
+              Tab(
+                icon: Icon(Icons.live_tv_rounded),
+                text: 'Live',
+              ),
+              Tab(
+                icon: Icon(Icons.calendar_month_outlined),
+                text: 'Upcoming',
+              ),
+              Tab(
+                icon: Icon(Icons.emoji_events_outlined),
+                text: 'Results',
+              ),
             ]),
           ),
           body: Column(
             children: [
-              const SizedBox(
-                height: 20,
-              ),
+              const SizedBox(height: 20),
               SizedBox(
                 height: 30,
                 child: ListView.builder(
@@ -111,9 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   }),
                 ),
               ),
-              const SizedBox(
-                height: 30,
-              ),
+              const SizedBox(height: 30),
               Expanded(
                 child: ListView.builder(
                   itemCount: filteredContestWidgets.length,
@@ -124,6 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ],
           ),
+          bottomNavigationBar: const BottomNavBar(),
         ),
       ),
     );
