@@ -6,7 +6,7 @@ import '../screens/my_matches.dart';
 import '../screens/profile_page.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({super.key});
+  const BottomNavBar({Key? key}) : super(key: key);
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -14,7 +14,7 @@ class BottomNavBar extends StatefulWidget {
 
 class _BottomNavBarState extends State<BottomNavBar> {
   int currentScreen = 0;
-  final List<Widget> screens = const [
+  final List<Widget> screens = [
     HomeScreen(),
     MyMatches(),
     Something(),
@@ -39,12 +39,12 @@ class _BottomNavBarState extends State<BottomNavBar> {
     setState(() {
       currentScreen = index;
     });
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: ((context) => screens[currentScreen]),
-      ),
-    );
+
+    printfunc();
+  }
+
+  printfunc() {
+    print(currentScreen);
   }
 
   @override
@@ -56,7 +56,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
       unselectedItemColor: Colors.grey,
       selectedItemColor: Colors.black,
       currentIndex: currentScreen,
-      onTap: onTabTapped,
+     onTap: onTabTapped,
       items: List.generate(icons.length, (index) {
         return BottomNavigationBarItem(
           icon: Icon(

@@ -1,4 +1,4 @@
-import 'package:fantasyapp/screens/home_screen.dart';
+import 'package:fantasyapp/screens/main_page.dart';
 import 'package:fantasyapp/screens/sign_up.dart';
 import 'package:fantasyapp/auth/services/google_auth_service.dart';
 import 'package:fantasyapp/widgets/app_text.dart';
@@ -34,7 +34,7 @@ class _SignInState extends State<SignIn> {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeScreen(),
+          builder: (context) => const MainPage(),
         ),
       );
       print('Sign-in successful');
